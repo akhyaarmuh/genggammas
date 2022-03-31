@@ -1,0 +1,61 @@
+POST http://localhost:5000/api/v1/pregnant
+Content-Type: application/json
+
+{
+  "name": "Asna",
+  "husband": "Aman",
+  "nik" : "4566554546546456",
+  "bpjs": "5656565654152121",
+  "hpht": "28 6 2022",
+  "golDarah": "AB",
+  "noHp": "082354566666",
+  "born": "24 6 1994",
+  "allRisk": ["sampi", "yan"],
+  "penolong": "",
+  "tempat": "RSUD Pambalah Batung",
+  "pendamping": "Samsuni",
+  "transport": "Ambulance",
+  "calonPendonor": "Ktrina kaif",
+  "kader": "623068e98a5e16e0ad9f3f84"
+}
+
+###
+PATCH  http://localhost:5000/api/v1/pregnant/cekup/624305dace8adad5beae6c1b
+Content-Type: application/json
+
+{
+  "keluhan": "2",
+  "uKehamilan": "12",
+  "bb" : "95",
+  "tensi": "120/100",
+  "lila": "50",
+  "tDarah": 10,
+  "peb": "tes"
+}
+
+###
+GET http://localhost:5000/api/v1/pregnant
+
+###
+GET http://localhost:5000/api/v1/pregnant/624305dace8adad5beae6c1b
+
+
+
+###
+POST  http://localhost:5000/api/v1/user/
+Content-Type: application/json
+
+{
+  "name": "Akhyar Muhammad",
+  "noHp": "082354566666",
+  "password" : "Akudijalan"
+}
+
+###
+POST  http://localhost:5000/api/v1/user/kader
+Content-Type: application/json
+
+{
+  "name": "Akhyar",
+  "noHp": "082354566666"
+}

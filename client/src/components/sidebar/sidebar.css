@@ -1,0 +1,9 @@
+.nav-item a {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.nav-item a svg {
+  font-size: 25px;
+}
