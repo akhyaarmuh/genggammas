@@ -20,6 +20,7 @@ const Private = () => {
   useEffect(() => {
     actionGetToken();
   }, []);
+
   const actionGetToken = async () => {
     try {
       const res = await getToken();

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import axios from "axios";
 import reportWebVitals from "./reportWebVitals";
+
 axios.defaults.withCredentials = true;
 
 ReactDOM.render(

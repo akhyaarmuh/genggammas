@@ -66,7 +66,7 @@ export const login = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           maxAge: 24 * 60 * 60 * 1000,
-          secure: true,
+          // secure: true,
         });
         res.json({ refreshToken });
       }
@@ -82,25 +82,25 @@ export const logout = async (req, res) => {
   if (!refreshToken) return res.sendStatus(204);
   const user = await User.findOne({ refreshToken });
   if (!user) return res.sendStatus(204);
-  await User.findOneAndUpdate({ _id: user._id }, { refreshToken: "" });
+  await User.findOneAndUpdate({ _id: user._id }, { refreshToken: null });
   res.clearCookie("refreshToken");
   return res.sendStatus(200);
 };
 
 export const getToken = async (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken;
-    if (!refreshToken) return res.sendStatus(401);
-    const user = await User.findOne({ refreshToken });
-    if (!user) return res.sendStatus(403);
-    jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      (err, decode) => {
-        if (err) return res.sendStatus(403);
-        res.json(decode);
-      }
-    );
+    // const refreshToken = req.cookies.refreshToken;
+    // if (!refreshToken) return res.sendStatus(401);
+    // const user = await User.findOne({ refreshToken });
+    // if (!user) return res.sendStatus(403);
+    // jwt.verify(
+    //   refreshToken,
+    //   process.env.REFRESH_TOKEN_SECRET,
+    //   (err, decode) => {
+    //     if (err) return res.sendStatus(403);
+    //     res.json(decode);
+    //   }
+    // );
   } catch (error) {
     console.log(error);
   }
