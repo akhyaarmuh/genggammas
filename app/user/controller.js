@@ -89,18 +89,18 @@ export const logout = async (req, res) => {
 
 export const getToken = async (req, res) => {
   try {
-    // const refreshToken = req.cookies.refreshToken;
-    // if (!refreshToken) return res.sendStatus(401);
-    // const user = await User.findOne({ refreshToken });
-    // if (!user) return res.sendStatus(403);
-    // jwt.verify(
-    //   refreshToken,
-    //   process.env.REFRESH_TOKEN_SECRET,
-    //   (err, decode) => {
-    //     if (err) return res.sendStatus(403);
-    //     res.json(decode);
-    //   }
-    // );
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.sendStatus(401);
+    const user = await User.findOne({ refreshToken });
+    if (!user) return res.sendStatus(403);
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, decode) => {
+        if (err) return res.sendStatus(403);
+        res.json(decode);
+      }
+    );
   } catch (error) {
     console.log(error);
   }
