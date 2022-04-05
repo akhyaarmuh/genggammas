@@ -94,14 +94,7 @@ const Cekup = () => {
   };
 
   const actionCreateCekup = async () => {
-    if (
-      !data.bb ||
-      !data.tensi.value ||
-      !data.lila.value ||
-      !data.hb.value ||
-      !data.tDarah
-    )
-      return;
+    if (!data.bb || !data.tensi.value) return;
 
     if (data.date.status) {
       try {

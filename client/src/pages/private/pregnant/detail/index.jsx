@@ -111,9 +111,9 @@ const Detail = () => {
                       <th>Keluhan</th>
                       <th>Usia Kehamilan</th>
                       <th>BB</th>
-                      <th>HB</th>
-                      <th>Tensi</th>
                       <th>Lila</th>
+                      <th>Tensi</th>
+                      <th>HB</th>
                       <th>Tablet Tambah Darah</th>
                     </tr>
                   </thead>
@@ -124,9 +124,9 @@ const Detail = () => {
                         <td>{cek.keluhan}</td>
                         <td>{cek.uKehamilan} Minggu</td>
                         <td>{cek.bb} Kg</td>
-                        <td>{cek.hb}</td>
-                        <td>{cek.tensi} mmHg</td>
                         <td>{cek.lila} cm</td>
+                        <td>{cek.tensi} mmHg</td>
+                        <td>{cek.hb}</td>
                         <td>{cek.tDarah} Tablet</td>
                       </tr>
                     ))}
