@@ -6,19 +6,21 @@ const Cekup = () => {
   const { id } = useParams();
   const history = useHistory();
   const [data, setData] = useState({
+    date: { status: false, value: "" },
     keluhan: "",
-    uKehamilan: "",
     bb: "",
-    tensi: "",
-    lila: "",
+    tensi: { value: "", msg: "" },
+    lila: { value: "", msg: "" },
+    hb: { value: "", msg: "" },
+    proteinUrine: "",
+    reduksiUrine: "",
     tDarah: "",
-    peb: "",
   });
 
   const changeData = (e) => {
     const key = e.target.id;
     const value = e.target.value;
-    if (key === "uKehamilan" || key === "bb" || key === "tDarah") {
+    if (key === "bb" || key === "tDarah") {
       const number = Number(value);
       if (isNaN(number)) {
         return;
@@ -29,13 +31,90 @@ const Cekup = () => {
     }
   };
 
+  const changeDataWithMessage = (e) => {
+    const key = e.target.id;
+    const value = e.target.value;
+    if (key === "lila") {
+      const number = Number(value);
+      if (isNaN(number)) return;
+
+      if (number < 23.5) {
+        setData({ ...data, lila: { ...data.lila, msg: "kek", value } });
+      } else {
+        setData({ ...data, lila: { ...data.lila, msg: "", value } });
+      }
+    } else if (key === "hb") {
+      const number = Number(value);
+      if (isNaN(number)) return;
+
+      if (number < 11) {
+        setData({ ...data, hb: { ...data.hb, msg: "anemia", value } });
+      } else {
+        setData({ ...data, hb: { ...data.hb, msg: "", value } });
+      }
+    } else {
+      setData({ ...data, tensi: { ...data.tensi, value, msg: "" } });
+    }
+  };
+
+  const handleBlur = () => {
+    const arr = data.tensi.value.split("/");
+    if (arr.length !== 2 || isNaN(arr[0]) || isNaN(arr[1])) {
+      setData({
+        ...data,
+        tensi: { ...data.tensi, msg: "Masukkan format yang benar" },
+      });
+    } else {
+      if (Number(arr[0]) >= 140 || Number(arr[1]) >= 90) {
+        setData({
+          ...data,
+          tensi: { ...data.tensi, msg: "Hypertensi" },
+        });
+      }
+    }
+  };
+
   const actionCreateCekup = async () => {
-    try {
-      await createCekup(id, { ...data, tDarah: Number(data.tDarah) });
-      history.push("/pregnant");
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.data.errorMessage);
+    // if (
+    //   !data.bb ||
+    //   !data.tensi.value ||
+    //   !data.lila.value ||
+    //   !data.hb.value ||
+    //   !data.tDarah
+    // )
+    //   return;
+
+    if (data.date.status) {
+      try {
+        await createCekup(id, {
+          ...data,
+          date: data.date.value,
+          tensi: data.tensi.value,
+          lila: data.lila.value,
+          hb: data.hb.value,
+          tDarah: Number(data.tDarah),
+        });
+        history.push("/pregnant");
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data.errorMessage);
+        }
+      }
+    } else {
+      const { date, ...newData } = data;
+      try {
+        await createCekup(id, {
+          ...newData,
+          tensi: data.tensi.value,
+          lila: data.lila.value,
+          hb: data.hb.value,
+          tDarah: Number(data.tDarah),
+        });
+        history.push("/pregnant");
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data.errorMessage);
+        }
       }
     }
   };
@@ -79,6 +158,46 @@ const Cekup = () => {
                 <form>
                   <div className="card-body">
                     <div className="form-group">
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              checked={data.date.status}
+                              onChange={() =>
+                                setData({
+                                  ...data,
+                                  date: {
+                                    ...data.date,
+                                    status: !data.date.status,
+                                  },
+                                })
+                              }
+                            />
+                            <label className="form-check-label">
+                              Tanggal manual
+                            </label>
+                          </div>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="date"
+                            placeholder="cth. 5 5 2022"
+                            onChange={(e) =>
+                              setData({
+                                ...data,
+                                date: { ...data.date, value: e.target.value },
+                              })
+                            }
+                            value={data.date.value}
+                            disabled={!data.date.status ? true : false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
                       <label htmlFor="keluhan">Keluhan</label>
                       <input
                         type="text"
@@ -90,18 +209,7 @@ const Cekup = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="uKehamilan">Usia Kehamilan</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="uKehamilan"
-                        placeholder="Masukkan Usia Kehamilan"
-                        onChange={changeData}
-                        value={data.uKehamilan}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="bb">Berat Badan</label>
+                      <label htmlFor="bb">Berat Badan(Kg)</label>
                       <input
                         type="text"
                         className="form-control"
@@ -112,25 +220,68 @@ const Cekup = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="tensi">Tekanan Darah</label>
+                      <label htmlFor="tensi">Tekanan Darah(mmHg)</label>
                       <input
                         type="text"
                         className="form-control"
                         id="tensi"
-                        placeholder="Masukkan tensi darah"
-                        onChange={changeData}
-                        value={data.tensi}
+                        placeholder="cnt. 120/100"
+                        onChange={changeDataWithMessage}
+                        value={data.tensi.value}
+                        onBlur={handleBlur}
                       />
+                      {data.tensi.msg && (
+                        <small className="text-danger ">{data.tensi.msg}</small>
+                      )}
                     </div>
                     <div className="form-group">
-                      <label htmlFor="lila">Lila</label>
+                      <label htmlFor="lila">Lila(cm)</label>
                       <input
                         type="text"
                         className="form-control"
                         id="lila"
                         placeholder="lila"
+                        onChange={changeDataWithMessage}
+                        value={data.lila.value}
+                      />
+                      {data.lila.msg && (
+                        <small className="text-danger ">{data.lila.msg}</small>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lila">HB</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="hb"
+                        placeholder="hb"
+                        onChange={changeDataWithMessage}
+                        value={data.hb.value}
+                      />
+                      {data.hb.msg && (
+                        <small className="text-danger ">{data.hb.msg}</small>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="tDarah">Protein Urine</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="proteinUrine"
+                        placeholder="protein urine"
                         onChange={changeData}
-                        value={data.lila}
+                        value={data.proteinUrine}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="tDarah">Reduksi Urine</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="reduksiUrine"
+                        placeholder="reduksi urine"
+                        onChange={changeData}
+                        value={data.reduksiUrine}
                       />
                     </div>
                     <div className="form-group">
@@ -142,17 +293,6 @@ const Cekup = () => {
                         placeholder="jumlah tablet yang diminum"
                         onChange={changeData}
                         value={data.tDarah}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="peb">PEB</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="peb"
-                        placeholder="PEB"
-                        onChange={changeData}
-                        value={data.peb}
                       />
                     </div>
                   </div>

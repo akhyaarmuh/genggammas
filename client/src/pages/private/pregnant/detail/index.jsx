@@ -59,13 +59,6 @@ const Detail = () => {
               >
                 Edit data
               </Link> */}
-              <Link
-                to={`/pregnant/cekup/${data._id}`}
-                type="button"
-                className="btn btn-primary btn-sm ml-2"
-              >
-                Buat Data Cekup
-              </Link>
             </div>
           </div>
           <div className="row">
@@ -97,12 +90,19 @@ const Detail = () => {
                       <td>{data.golDarah}</td>
                       <td>{data.noHp}</td>
                       <td>{data.allRisk}</td>
-                      <td>{data.umur}</td>
+                      <td>{data.umur} Tahun</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <h3 className="mt-3">Riwayat Cekup</h3>
+              <h3 className="mt-3">Riwayat Pemeriksaan Kehamilan (ANC)</h3>
+              <Link
+                to={`/pregnant/cekup/${data._id}`}
+                type="button"
+                className="btn btn-primary btn-sm ml-2"
+              >
+                Buat ANC
+              </Link>
               <div className="card-body table-responsive p-0">
                 <table className="table table-striped mt-3">
                   <thead>
@@ -111,10 +111,10 @@ const Detail = () => {
                       <th>Keluhan</th>
                       <th>Usia Kehamilan</th>
                       <th>BB</th>
+                      <th>HB</th>
                       <th>Tensi</th>
                       <th>Lila</th>
                       <th>Tablet Tambah Darah</th>
-                      <th>PEB</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,12 +122,12 @@ const Detail = () => {
                       <tr key={i}>
                         <td>{cek.date}</td>
                         <td>{cek.keluhan}</td>
-                        <td>{cek.uKehamilan}</td>
+                        <td>{cek.uKehamilan} Minggu</td>
                         <td>{cek.bb} Kg</td>
-                        <td>{cek.tensi}</td>
-                        <td>{cek.lila}</td>
-                        <td>{cek.tDarah}</td>
-                        <td>{cek.peb}</td>
+                        <td>{cek.hb}</td>
+                        <td>{cek.tensi} mmHg</td>
+                        <td>{cek.lila} cm</td>
+                        <td>{cek.tDarah} Tablet</td>
                       </tr>
                     ))}
                     <tr>

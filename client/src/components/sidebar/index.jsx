@@ -9,13 +9,14 @@ import { logout } from "../../services/auth";
 
 const Sidebar = ({ role }) => {
   const history = useHistory();
+
   const actionLogout = async () => {
     try {
       await logout();
       history.push("/login");
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data.error.message);
+        console.log(error.response.data.erroMessage);
       }
     }
   };
@@ -69,7 +70,11 @@ const Sidebar = ({ role }) => {
               </li>
             )}
             <li className="nav-item mt-3">
-              <Link onClick={actionLogout} className="nav-link">
+              <Link
+                to={history.location.pathname}
+                onClick={actionLogout}
+                className="nav-link"
+              >
                 <IoLogOutOutline />
                 <p>Keluar</p>
               </Link>

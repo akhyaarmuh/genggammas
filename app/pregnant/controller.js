@@ -47,6 +47,21 @@ const getDateNow = () => {
   return `${tgl} ${bln + 1} ${thn}`;
 };
 
+const getUsiaKehamilan = (hpht, date) => {
+  const [tgl, bln, thn] = hpht.split(" ");
+  const [dateTgl, dateBln, dateThn] = date.split(" ");
+  const timeHpht = new Date(Number(thn), Number(bln) - 1, Number(tgl));
+  const timeDate = new Date(
+    Number(dateThn),
+    Number(dateBln) - 1,
+    Number(dateTgl)
+  );
+  const usia = timeDate - timeHpht;
+  console.log(usia);
+  const usiaMinggu = Math.floor(usia / (7 * 24 * 60 * 60 * 1000));
+  return usiaMinggu;
+};
+
 export const createPregnant = async (req, res) => {
   const pregnant = req.body;
   try {
@@ -66,12 +81,17 @@ export const createPregnant = async (req, res) => {
 };
 
 export const createCekup = async (req, res) => {
-  const cekup = req.body;
+  const { date, ...cekup } = req.body;
   const { id } = req.params;
   try {
-    const nowDate = getDateNow();
-    cekup.date = nowDate;
+    if (!date) {
+      const nowDate = getDateNow();
+      cekup.date = nowDate;
+    } else {
+      cekup.date = date;
+    }
     const pregnant = await Pregnant.findById(id);
+    cekup.uKehamilan = getUsiaKehamilan(pregnant.hpht, cekup.date);
 
     await Pregnant.findByIdAndUpdate(id, { cekup: [...pregnant.cekup, cekup] });
     res.status(200).json({ message: "Riwayat cekup disimpan" });
