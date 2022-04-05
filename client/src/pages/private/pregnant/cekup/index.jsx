@@ -12,7 +12,7 @@ const Cekup = () => {
     tensi: { value: "", msg: "" },
     lila: { value: "", msg: "" },
     hb: { value: "", msg: "" },
-    proteinUrine: false,
+    proteinUrine: { value: "", msg: "" },
     reduksiUrine: "",
     tDarah: "",
     tm1: false,
@@ -53,6 +53,23 @@ const Cekup = () => {
         setData({ ...data, hb: { ...data.hb, msg: "anemia", value } });
       } else {
         setData({ ...data, hb: { ...data.hb, msg: "", value } });
+      }
+    } else if (key === "proteinUrine") {
+      if (value === "-") {
+        setData({
+          ...data,
+          proteinUrine: { ...data.proteinUrine, msg: "Normal", value },
+        });
+      } else if (value === "+1" || value === "+2" || value === "+3") {
+        setData({
+          ...data,
+          proteinUrine: { ...data.proteinUrine, msg: "Pre Eklamsi", value },
+        });
+      } else {
+        setData({
+          ...data,
+          proteinUrine: { ...data.proteinUrine, msg: "", value },
+        });
       }
     } else {
       setData({ ...data, tensi: { ...data.tensi, value, msg: "" } });
@@ -102,6 +119,7 @@ const Cekup = () => {
           lila: data.lila.value,
           hb: data.hb.value,
           tDarah: Number(data.tDarah),
+          proteinUrine: data.proteinUrine.value,
         });
         history.push("/pregnant");
       } catch (error) {
@@ -125,6 +143,7 @@ const Cekup = () => {
           lila: data.lila.value,
           hb: data.hb.value,
           tDarah: Number(data.tDarah),
+          proteinUrine: data.proteinUrine.value,
         });
         history.push("/pregnant");
       } catch (error) {
@@ -292,38 +311,24 @@ const Cekup = () => {
                     </div>
                     <div className="form-group">
                       <label htmlFor="tDarah">Protein Urine</label>
-                      <div className="form-check">
-                        <div>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={data.proteinUrine}
-                            onChange={() =>
-                              setData({
-                                ...data,
-                                proteinUrine: !data.proteinUrine,
-                              })
-                            }
-                          />
-                          <label className="form-check-label">
-                            Pre Eklamsi
-                          </label>
-                        </div>
-                        <div>
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={!data.proteinUrine}
-                            onChange={() =>
-                              setData({
-                                ...data,
-                                proteinUrine: !data.proteinUrine,
-                              })
-                            }
-                          />
-                          <label className="form-check-label">Normal</label>
-                        </div>
-                      </div>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="proteinUrine"
+                        placeholder="protein urine"
+                        onChange={changeDataWithMessage}
+                        value={data.proteinUrine.value}
+                      />
+                      {data.proteinUrine.msg &&
+                      data.proteinUrine.msg === "Normal" ? (
+                        <small className="text-success ">
+                          {data.proteinUrine.msg}
+                        </small>
+                      ) : (
+                        <small className="text-danger ">
+                          {data.proteinUrine.msg}
+                        </small>
+                      )}
                     </div>
                     <div className="form-group">
                       <label htmlFor="tDarah">Tablet Tambah Darah</label>

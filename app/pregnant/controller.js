@@ -57,7 +57,6 @@ const getUsiaKehamilan = (hpht, date) => {
     Number(dateTgl)
   );
   const usia = timeDate - timeHpht;
-  console.log(usia);
   const usiaMinggu = Math.floor(usia / (7 * 24 * 60 * 60 * 1000));
   return usiaMinggu;
 };
