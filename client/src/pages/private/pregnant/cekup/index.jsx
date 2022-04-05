@@ -12,9 +12,11 @@ const Cekup = () => {
     tensi: { value: "", msg: "" },
     lila: { value: "", msg: "" },
     hb: { value: "", msg: "" },
-    proteinUrine: "",
+    proteinUrine: false,
     reduksiUrine: "",
     tDarah: "",
+    tm1: false,
+    tm2: false,
   });
 
   const changeData = (e) => {
@@ -65,7 +67,7 @@ const Cekup = () => {
         tensi: { ...data.tensi, msg: "Masukkan format yang benar" },
       });
     } else {
-      if (Number(arr[0]) >= 140 || Number(arr[1]) >= 90) {
+      if (Number(arr[0]) >= 140 || Number(arr[1]) > 90) {
         setData({
           ...data,
           tensi: { ...data.tensi, msg: "Hypertensi" },
@@ -75,17 +77,24 @@ const Cekup = () => {
   };
 
   const actionCreateCekup = async () => {
-    // if (
-    //   !data.bb ||
-    //   !data.tensi.value ||
-    //   !data.lila.value ||
-    //   !data.hb.value ||
-    //   !data.tDarah
-    // )
-    //   return;
+    if (
+      !data.bb ||
+      !data.tensi.value ||
+      !data.lila.value ||
+      !data.hb.value ||
+      !data.tDarah
+    )
+      return;
 
     if (data.date.status) {
       try {
+        if (!data.tm1) {
+          delete data.tm1;
+        }
+        if (!data.tm2) {
+          delete data.tm2;
+        }
+
         await createCekup(id, {
           ...data,
           date: data.date.value,
@@ -103,6 +112,13 @@ const Cekup = () => {
     } else {
       const { date, ...newData } = data;
       try {
+        if (!data.tm1) {
+          delete data.tm1;
+        }
+        if (!data.tm2) {
+          delete data.tm2;
+        }
+
         await createCekup(id, {
           ...newData,
           tensi: data.tensi.value,
@@ -262,17 +278,7 @@ const Cekup = () => {
                         <small className="text-danger ">{data.hb.msg}</small>
                       )}
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="tDarah">Protein Urine</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="proteinUrine"
-                        placeholder="protein urine"
-                        onChange={changeData}
-                        value={data.proteinUrine}
-                      />
-                    </div>
+
                     <div className="form-group">
                       <label htmlFor="tDarah">Reduksi Urine</label>
                       <input
@@ -294,6 +300,55 @@ const Cekup = () => {
                         onChange={changeData}
                         value={data.tDarah}
                       />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="tDarah">Protein Urine</label>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={data.proteinUrine}
+                          onChange={() =>
+                            setData({
+                              ...data,
+                              proteinUrine: !data.proteinUrine,
+                            })
+                          }
+                        />
+                        <label className="form-check-label">Pre Eklamsi</label>
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="tDarah">Status USG</label>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={data.tm1}
+                          onChange={() =>
+                            setData({
+                              ...data,
+                              tm1: !data.tm1,
+                            })
+                          }
+                        />
+                        <label className="form-check-label">TM 1</label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={data.tm2}
+                          onChange={() =>
+                            setData({
+                              ...data,
+                              tm2: !data.tm2,
+                            })
+                          }
+                        />
+                        <label className="form-check-label">TM 2</label>
+                      </div>
                     </div>
                   </div>
                   {/* /.card-body */}

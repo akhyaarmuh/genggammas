@@ -81,7 +81,7 @@ export const createPregnant = async (req, res) => {
 };
 
 export const createCekup = async (req, res) => {
-  const { date, ...cekup } = req.body;
+  const { date, tm1, tm2, ...cekup } = req.body;
   const { id } = req.params;
   try {
     if (!date) {
@@ -90,6 +90,14 @@ export const createCekup = async (req, res) => {
     } else {
       cekup.date = date;
     }
+
+    if (tm1) {
+      await Pregnant.findOneAndUpdate({ _id: id }, { tm1: true });
+    }
+    if (tm2) {
+      await Pregnant.findOneAndUpdate({ _id: id }, { tm2: true });
+    }
+
     const pregnant = await Pregnant.findById(id);
     cekup.uKehamilan = getUsiaKehamilan(pregnant.hpht, cekup.date);
 
@@ -173,6 +181,8 @@ export const getPregnantById = async (req, res) => {
       allRisk: pregnant.allRisk,
       umur: getUmur(pregnant.born),
       allTablet: pregnant.cekup.reduce((total, arr) => total + arr.tDarah, 0),
+      tm1: pregnant.tm1,
+      tm2: pregnant.tm2,
       cekup: pregnant.cekup.map((data) => ({
         ...data,
         date: formatDate(data.date),

@@ -135,6 +135,26 @@ const Detail = () => {
                         Total tablet tambah darah : {data.allTablet} Tablet
                       </th>
                     </tr>
+                    <tr>
+                      <th colSpan={8}>
+                        Status TM awal :{" "}
+                        {data.tm1 ? (
+                          <span className="badge badge-success">Selesai</span>
+                        ) : (
+                          <span className="badge badge-danger">Belum</span>
+                        )}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colSpan={8}>
+                        Status TM awal :{" "}
+                        {data.tm2 ? (
+                          <span className="badge badge-success">Selesai</span>
+                        ) : (
+                          <span className="badge badge-danger">Belum</span>
+                        )}
+                      </th>
+                    </tr>
                   </tbody>
                 </table>
               </div>

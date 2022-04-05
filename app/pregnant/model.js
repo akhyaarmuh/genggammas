@@ -64,6 +64,14 @@ const pregnantSchema = new mongoose.Schema(
     status: {
       type: Boolean,
     },
+    tm1: {
+      type: Boolean,
+      default: false,
+    },
+    tm2: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
