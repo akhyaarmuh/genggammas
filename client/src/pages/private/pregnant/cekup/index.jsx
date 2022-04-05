@@ -291,6 +291,41 @@ const Cekup = () => {
                       />
                     </div>
                     <div className="form-group">
+                      <label htmlFor="tDarah">Protein Urine</label>
+                      <div className="form-check">
+                        <div>
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={data.proteinUrine}
+                            onChange={() =>
+                              setData({
+                                ...data,
+                                proteinUrine: !data.proteinUrine,
+                              })
+                            }
+                          />
+                          <label className="form-check-label">
+                            Pre Eklamsi
+                          </label>
+                        </div>
+                        <div>
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={!data.proteinUrine}
+                            onChange={() =>
+                              setData({
+                                ...data,
+                                proteinUrine: !data.proteinUrine,
+                              })
+                            }
+                          />
+                          <label className="form-check-label">Normal</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-group">
                       <label htmlFor="tDarah">Tablet Tambah Darah</label>
                       <input
                         type="text"
@@ -300,23 +335,6 @@ const Cekup = () => {
                         onChange={changeData}
                         value={data.tDarah}
                       />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="tDarah">Protein Urine</label>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={data.proteinUrine}
-                          onChange={() =>
-                            setData({
-                              ...data,
-                              proteinUrine: !data.proteinUrine,
-                            })
-                          }
-                        />
-                        <label className="form-check-label">Pre Eklamsi</label>
-                      </div>
                     </div>
 
                     <div className="form-group">

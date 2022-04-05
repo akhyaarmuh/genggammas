@@ -137,9 +137,9 @@ const Detail = () => {
                     </tr>
                     <tr>
                       <th colSpan={8}>
-                        Status TM awal :{" "}
+                        USG TM awal :{" "}
                         {data.tm1 ? (
-                          <span className="badge badge-success">Selesai</span>
+                          <span className="badge badge-success">Sudah</span>
                         ) : (
                           <span className="badge badge-danger">Belum</span>
                         )}
@@ -147,9 +147,9 @@ const Detail = () => {
                     </tr>
                     <tr>
                       <th colSpan={8}>
-                        Status TM awal :{" "}
+                        USG TM akhir :{" "}
                         {data.tm2 ? (
-                          <span className="badge badge-success">Selesai</span>
+                          <span className="badge badge-success">Sudah</span>
                         ) : (
                           <span className="badge badge-danger">Belum</span>
                         )}
