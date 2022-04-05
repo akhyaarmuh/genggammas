@@ -123,11 +123,11 @@ const Detail = () => {
                         <td>{cek.date}</td>
                         <td>{cek.keluhan}</td>
                         <td>{cek.uKehamilan} Minggu</td>
-                        <td>{cek.bb} Kg</td>
-                        <td>{cek.lila} cm</td>
-                        <td>{cek.tensi} mmHg</td>
+                        <td>{cek.bb && `${cek.bb} Kg`}</td>
+                        <td>{cek.lila && `${cek.lila} cm`}</td>
+                        <td>{cek.tensi && `${cek.tensi} mmHg`}</td>
                         <td>{cek.hb}</td>
-                        <td>{cek.tDarah} Tablet</td>
+                        <td>{cek.tDarah && `${cek.tDarah} Tablet`}</td>
                       </tr>
                     ))}
                     <tr>
